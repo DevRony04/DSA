@@ -23,33 +23,9 @@ Here I solve **LeetCode DSA problems daily** to strengthen problem-solving skill
 
 ---
 
-## 📂 Folder Structure : -
+## 📊 Progress Snapshot
 
-DSA/
-│── 1-two-sum/
-│── 2-add-two-numbers/
-│── 3-longest-substring-without-repeating-characters/
-│── 4-median-of-two-sorted-arrays/
-│── 5-longest-palindromic-substring/
-│── 6-zigzag-conversion/
-│── 7-reverse-integer/
-│── 8-string-to-integer-atoi/
-│── 9-palindrome-number/
-│── 10-regular-expression-matching/
-│── 11-container-with-most-water/
-│── 12-integer-to-roman/
-│── 13-roman-to-integer/
-│── 14-longest-common-prefix/
-│── 15-3sum/
-│── 16-3sum-closest/
-│── 17-letter-combinations-of-a-phone-number/
-│── 18-4sum/
-│── 19-remove-nth-node-from-end-of-list/
-│── 20-valid-parentheses/
-│── 21-merge-two-sorted-lists/
-│── 22-generate-parentheses/
-│── 23-merge-k-sorted-lists/
-│── 24-swap-nodes-in-pairs/
-│── 25-reverse-nodes-in-k-group/
-│── 26-remove-duplicates-from-sorted-array/
-└── README.md
+- Problems Solved: 200+ LeetCode DSA
+- Languages: Java (primary)
+- Difficulty Coverage: Easy ✅ | Medium ✅ | Hard ✅
+- Consistency: Daily practice streak 🔥
