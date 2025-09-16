@@ -1,37 +1,55 @@
 class Solution {
+    private int[] rows = new int[9];
+    private int[] cols = new int[9];
+    private int[] boxes = new int[9];
+    private List<int[]> empty = new ArrayList<>();
+
     public void solveSudoku(char[][] board) {
-        solve(board);
-    }
-
-    private boolean solve(char[][] board) {
-        for (int row = 0; row < 9; row++) {
-            for (int col = 0; col < 9; col++) {
-                if (board[row][col] == '.') {
-                    for (char num = '1'; num <= '9'; num++) {
-                        if (isValid(board, row, col, num)) {
-                            board[row][col] = num;
-
-                            if (solve(board)) {
-                                return true; 
-                            }
-                            board[row][col] = '.'; 
-                        }
-                    }
-                    return false;
+        for (int r = 0; r < 9; r++) {
+            for (int c = 0; c < 9; c++) {
+                if (board[r][c] == '.') {
+                    empty.add(new int[]{r, c});
+                } else {
+                    int d = board[r][c] - '1';
+                    setMask(r, c, d);
                 }
             }
         }
-        return true;
+        backtrack(board, 0);
     }
 
-    private boolean isValid(char[][] board, int row, int col, char num) {
-        for (int i = 0; i < 9; i++) {
-             if (board[row][i] == num) return false;
-             if (board[i][col] == num) return false;
-             int subRow = 3 * (row / 3) + i / 3;
-             int subCol = 3 * (col / 3) + i % 3;
-            if (board[subRow][subCol] == num) return false;
+    private boolean backtrack(char[][] board, int idx) {
+        if (idx == empty.size()) return true; 
+
+        int[] cell = empty.get(idx);
+        int r = cell[0], c = cell[1];
+        int box = (r / 3) * 3 + (c / 3);
+
+        int mask = rows[r] | cols[c] | boxes[box];
+
+        for (int d = 0; d < 9; d++) {
+            if ((mask & (1 << d)) == 0) { 
+                board[r][c] = (char) (d + '1');
+                setMask(r, c, d);
+
+                if (backtrack(board, idx + 1)) return true;
+               
+                unsetMask(r, c, d);
+                board[r][c] = '.';
+            }
         }
-        return true;
+        return false;
+    }
+
+    private void setMask(int r, int c, int d) {
+        rows[r] |= 1 << d;
+        cols[c] |= 1 << d;
+        boxes[(r / 3) * 3 + c / 3] |= 1 << d;
+    }
+
+    private void unsetMask(int r, int c, int d) {
+        rows[r] ^= 1 << d;
+        cols[c] ^= 1 << d;
+        boxes[(r / 3) * 3 + c / 3] ^= 1 << d;
     }
 }
