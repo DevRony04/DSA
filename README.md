@@ -39,6 +39,7 @@ This helps recognize problem structures instantly — a crucial FAANG skill.
   <img src="https://img.shields.io/badge/Language-Java-orange?style=for-the-badge&logo=java" />
   <img src="https://img.shields.io/badge/Platform-LeetCode-yellow?style=for-the-badge&logo=leetcode" />
   <img src="https://img.shields.io/badge/Editor-VSCode-blue?style=for-the-badge&logo=visualstudiocode" />
+  <img src="https://img.shields.io/badge/Editor-IntelliJ_IDEA-darkblue?style=for-the-badge&logo=intellijidea" />
   <img src="https://img.shields.io/badge/VersionControl-GitHub-black?style=for-the-badge&logo=github" />
 </p>
 
