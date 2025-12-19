@@ -1,44 +1,35 @@
 class Solution {
-    List<String> res = new LinkedList<>();
-    char[] arr;
+    List<String> result = new ArrayList<>();
+
     public List<String> restoreIpAddresses(String s) {
-        this.arr = s.toCharArray();
-        //Base case
-        if(12 < arr.length) return res;
-        List<String> curCombination = new LinkedList<>();
-        helper(curCombination, 0);
-        return res;
+        backtrack(s, 0, 0, new StringBuilder());
+        return result;
     }
-    private void helper(List<String> curComb, int index){
-        //Check if finish all the target string with the right list size
-        int size = curComb.size();
-        if(size > 4) return;
-        
-        if(size == 4 && index == arr.length){
-            String curCombString = convertString(curComb);
-            res.add(curCombString);
+
+    private void backtrack(String s, int index, int segments, StringBuilder path) {
+
+        // If 4 segments formed and all chars used
+        if (segments == 4 && index == s.length()) {
+            result.add(path.substring(0, path.length() - 1));
             return;
         }
-        //dfs for each combination search
-        StringBuilder str = new StringBuilder();
-        for(int i = index; i < arr.length && i < index + 3; i++){
-            str.append(arr[i]);
-            if(!checkValidDigits(str.toString())) break;
-            curComb.add(str.toString());
-            helper(curComb, i + 1);
-            curComb.remove(curComb.size() - 1);
+
+        // Prune invalid paths
+        if (segments == 4 || index == s.length()) return;
+
+        int num = 0;
+        int len = path.length();
+
+        for (int i = index; i < Math.min(index + 3, s.length()); i++) {
+
+            num = num * 10 + (s.charAt(i) - '0');
+
+            if (num > 255) break;           // invalid range
+            if (i > index && s.charAt(index) == '0') break; // leading zero
+
+            path.append(num).append('.');
+            backtrack(s, i + 1, segments + 1, path);
+            path.setLength(len); // backtrack
         }
-    }
-    private boolean checkValidDigits(String str){
-        if(str.length() > 1 && str.charAt(0) == '0') return false;
-        return Integer.parseInt(str) <= 255;
-    }
-    private String convertString(List<String> comb){
-        StringBuilder sb = new StringBuilder();
-        for(String str : comb){
-            sb.append(str);
-            sb.append('.');
-        }
-        return sb.substring(0, sb.length() - 1);
     }
 }
