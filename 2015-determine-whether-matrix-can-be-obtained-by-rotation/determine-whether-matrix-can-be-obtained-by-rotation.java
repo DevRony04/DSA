@@ -1,24 +1,26 @@
 class Solution {
-    public boolean findRotation(int[][] mat, int[][] target) {
-        boolean r1 = true, r2 = true, r3 = true, r4 = true;
-        int n = mat.length;
-        // O(n^2)
-        for(int i=0; i<n; i++) {
-            for(int j=0; j<n; j++) {
-                // 0 degrees or 360 degree rotation
-                if(mat[i][j]!=target[i][j])
-                    r1 = false;
-                // 90 degree
-                if(mat[i][j]!=target[j][n-i-1])
-                    r2 = false;
-                // 180 degree
-                if(mat[i][j]!=target[n-i-1][n-j-1])
-                    r3 = false;
-                // 270
-                if(mat[i][j]!=target[n-j-1][i])
-                    r4 = false;
+    public boolean findRotation(int[][] mat, int[][] target) {    
+       int n = mat.length;
+
+        boolean r0 = true, r90 = true, r180 = true, r270 = true;
+
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+
+                if (mat[i][j] != target[i][j])
+                    r0 = false;
+
+                if (mat[n - j - 1][i] != target[i][j])
+                    r90 = false;
+
+                if (mat[n - i - 1][n - j - 1] != target[i][j])
+                    r180 = false;
+
+                if (mat[j][n - i - 1] != target[i][j])
+                    r270 = false;
             }
         }
-         return (r1 || r2 || r3 || r4);
+
+        return r0 || r90 || r180 || r270;
     }
 }
