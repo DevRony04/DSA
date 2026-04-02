@@ -1,65 +1,69 @@
 class Solution {
-    int m, n;
-    int[][][] dp;
+    public int maximumAmount(int[][] coins) {
+         int m = coins.length, n = coins[0].length;
+        
+        int[][][] dp = new int[m][n][3];
 
-    int solve(int[][] coins, int i, int j, int neu) {
+        // Initialize with very small value
+        for (int i = 0; i < m; i++)
+            for (int j = 0; j < n; j++)
+                for (int k = 0; k < 3; k++)
+                    dp[i][j][k] = Integer.MIN_VALUE;
 
-        // Out of bounds
-        if (i >= m || j >= n) return Integer.MIN_VALUE;
-
-        // Base case
-        if (i == m - 1 && j == n - 1) {
-            if (coins[i][j] < 0 && neu > 0) return 0;
-            return coins[i][j];
-        }
-
-        // Memo
-        if (dp[i][j][neu] != Integer.MIN_VALUE) {
-            return dp[i][j][neu];
-        }
-
-        int best = Integer.MIN_VALUE;
-
-        // Move Down
-        int down = solve(coins, i + 1, j, neu);
-        if (down != Integer.MIN_VALUE) {
-            best = Math.max(best, coins[i][j] + down);
-        }
-
-        // Move Right
-        int right = solve(coins, i, j + 1, neu);
-        if (right != Integer.MIN_VALUE) {
-            best = Math.max(best, coins[i][j] + right);
-        }
-
-        // Neutralize (skip negative)
-        if (coins[i][j] < 0 && neu > 0) {
-            int downSkip = solve(coins, i + 1, j, neu - 1);
-            int rightSkip = solve(coins, i, j + 1, neu - 1);
-
-            int skipBest = Math.max(downSkip, rightSkip);
-            if (skipBest != Integer.MIN_VALUE) {
-                best = Math.max(best, skipBest);
+        // Start
+        for (int k = 0; k < 3; k++) {
+            if (coins[0][0] >= 0) {
+                dp[0][0][k] = coins[0][0];
+            } else {
+                if (k > 0)
+                    dp[0][0][k] = 0; // neutralize
+                else
+                    dp[0][0][k] = coins[0][0];
             }
         }
 
-        return dp[i][j][neu] = best;
-    }
-    public int maximumAmount(int[][] coins) {
-        m = coins.length;
-        n = coins[0].length;
-
-        dp = new int[m][n][3];
-
-        // Initialize with MIN_VALUE
         for (int i = 0; i < m; i++) {
             for (int j = 0; j < n; j++) {
+
+                if (i == 0 && j == 0) continue;
+
                 for (int k = 0; k < 3; k++) {
-                    dp[i][j][k] = Integer.MIN_VALUE;
+
+                    int val = coins[i][j];
+
+                    // From top
+                    if (i > 0 && dp[i - 1][j][k] != Integer.MIN_VALUE) {
+                        dp[i][j][k] = Math.max(dp[i][j][k],
+                                dp[i - 1][j][k] + val);
+                    }
+
+                    // From left
+                    if (j > 0 && dp[i][j - 1][k] != Integer.MIN_VALUE) {
+                        dp[i][j][k] = Math.max(dp[i][j][k],
+                                dp[i][j - 1][k] + val);
+                    }
+
+                    // Neutralize if negative
+                    if (val < 0 && k > 0) {
+
+                        // From top
+                        if (i > 0 && dp[i - 1][j][k - 1] != Integer.MIN_VALUE) {
+                            dp[i][j][k] = Math.max(dp[i][j][k],
+                                    dp[i - 1][j][k - 1]);
+                        }
+
+                        // From left
+                        if (j > 0 && dp[i][j - 1][k - 1] != Integer.MIN_VALUE) {
+                            dp[i][j][k] = Math.max(dp[i][j][k],
+                                    dp[i][j - 1][k - 1]);
+                        }
+                    }
                 }
             }
         }
 
-        return solve(coins, 0, 0, 2);
+        return Math.max(dp[m - 1][n - 1][0],
+               Math.max(dp[m - 1][n - 1][1], dp[m - 1][n - 1][2]));
+       
     }
 }
