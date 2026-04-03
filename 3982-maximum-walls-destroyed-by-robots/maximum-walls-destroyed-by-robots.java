@@ -1,6 +1,6 @@
 class Solution {
     public int maxWalls(int[] robots, int[] distance, int[] walls) {
-        int n = robots.length;
+           int n = robots.length;
         // left[i]  -> walls destroyed if robot i shoots LEFT
         // right[i] -> walls destroyed if robot i shoots RIGHT
         // overlap[i] -> walls between robot[i-1] and robot[i]
