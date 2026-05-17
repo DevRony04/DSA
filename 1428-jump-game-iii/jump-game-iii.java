@@ -1,32 +1,20 @@
-
-import java.util.LinkedList;
-import java.util.Queue;
-
 class Solution {
     public boolean canReach(int[] arr, int start) {
-          Queue<Integer> q = new LinkedList<>();
-    q.add(start);
-
-    while (!q.isEmpty()) {
-      int curr = q.poll();
-
-      // reached the target index
-      if (arr[curr] == 0)
-        return true;
-
-      // negative means we already tried it
-      if (arr[curr] < 0)
-        continue;
-
-      // Try both directions
-      if (curr + arr[curr] < arr.length) q.add(curr + arr[curr]);
-
-      if (curr - arr[curr] >= 0) q.add(curr - arr[curr]);
-
-      // mark this element as visited
-      arr[curr] = -arr[curr];
+          return dfs(arr, start);
     }
 
-    return false;
+    private boolean dfs(int[] arr, int i) {
+        if (i < 0 || i >= arr.length || arr[i] < 0) {
+            return false;
+        }
+
+        if (arr[i] == 0) {
+            return true;
+        }
+
+        int jump = arr[i];
+        arr[i] = -arr[i]; // mark visited
+
+        return dfs(arr, i + jump) || dfs(arr, i - jump);
     }
 }
