@@ -1,29 +1,26 @@
 class Solution {
     public boolean sumGame(String num) {
         int n = num.length();
-        int diff = 0; // s1 -s2
-        int qDiff = 0; // q1 - q2
-        for (int i = 0; i < n / 2; i++) {
-            if (num.charAt(i) == '?') {
-                qDiff++;
+        int half = n / 2;
+        
+        // diff = (sum of left) - (sum of right)
+        // qDiff = (count of ? in left) - (count of ? in right)
+        int diff = 0, qDiff = 0;
+        
+        for (int i = 0; i < n; i++) {
+            if (i < half) {
+                if (num.charAt(i) == '?') qDiff++;
+                else diff += num.charAt(i) - '0';
             } else {
-                diff += num.charAt(i) - '0';
+                if (num.charAt(i) == '?') qDiff--;
+                else diff -= num.charAt(i) - '0';
             }
         }
-        for (int i = n / 2; i < n; i++) {
-            if (num.charAt(i) == '?') {
-                qDiff--;
-            } else {
-                diff -= num.charAt(i) - '0';
-            }
-        }
-        // qDiff == 0 means equal number of '?' on both sides.
-        if (qDiff == 0) {
-            return diff != 0;
-        }
-        // Each pair of '?' can compensate by at most 9.
-        // If the current difference can exactly be compensated,
-        // Bob can force equality.
-        return diff * 2 != -9 * qDiff;
+        
+        // Bob wins only if:
+        // diff + qDiff * 9 / 2 == 0
+        // i.e. 2 * diff + qDiff * 9 == 0
+        // Alice wins if this condition is NOT met
+        return !(diff * 2 + qDiff * 9 == 0);
     }
 }
